@@ -1,12 +1,17 @@
-require('dotenv').config(); 
+require('dotenv').config();
 
+// Default numbers for OWNER_NUMBER and SUDO_USERS
+const DEFAULT_OWNER_NUMBER = '1234567890,9876543210'; // Replace with your default owner numbers
+const DEFAULT_SUDO_USERS = '1234567890,9876543210';   // Replace with your default sudo users
+
+global.owner = process.env.OWNER_NUMBER ? process.env.OWNER_NUMBER.split(',') : DEFAULT_OWNER_NUMBER.split(',');
 global.anitav4 = process.env.BOT_NAME || "𝐐𝐔𝐄𝐄𝐍_𝐀𝐍𝐈𝐓𝐀-𝐕𝟒";
 global.ownername = process.env.OWNER_NAME || "David Cyril";
 global.packname = process.env.PACK_NAME || "𝐐𝐔𝐄𝐄𝐍_𝐀𝐍𝐈𝐓𝐀-𝐕𝟒";
 global.author = process.env.AUTHOR || "𝐃𝐀𝐕𝐈𝐃 𝐂𝐘𝐑𝐈𝐋";
 global.channelname = process.env.CHANNEL_NAME || "𝐃𝐀𝐕𝐈𝐃 𝐂𝐘𝐑𝐈𝐋";
 global.channeljid = process.env.CHANNEL_JID || "120363315231436175@newsletter";
-global.autoTyping = process.env.AUTO_TYPING === 'true'; 
+global.autoTyping = process.env.AUTO_TYPING === 'true';
 global.autoRecord = process.env.AUTO_RECORD === 'true';
 global.autoViewStatus = process.env.AUTO_VIEW_STATUS === 'true';
 global.AUTOSTATUS_REACT = process.env.AUTOSTATUS_REACT === 'true';
@@ -27,6 +32,7 @@ global.roles = {
     25: "Legend",
 };
 
+global.sudoUsers = process.env.SUDO_USERS ? process.env.SUDO_USERS.split(',').map(user => `${user}@s.whatsapp.net`) : DEFAULT_SUDO_USERS.split(',').map(user => `${user}@s.whatsapp.net`);
 
 global.public = process.env.PUBLIC === 'true';
 
@@ -62,12 +68,11 @@ global.mess = {
     endLimit: process.env.MESSAGE_END_LIMIT || '_*Your Daily Limit Has Been Used Up, The Limit Will Be Reset Every 00:00 AM_*.',
 };
 
-
-let fs = require('fs')
-let file = require.resolve(__filename)
+let fs = require('fs');
+let file = require.resolve(__filename);
 fs.watchFile(file, () => {
-fs.unwatchFile(file)
-console.log(`Update ${__filename}`)
-delete require.cache[file]
-require(file)
-})
+    fs.unwatchFile(file);
+    console.log(`Update ${__filename}`);
+    delete require.cache[file];
+    require(file);
+});
